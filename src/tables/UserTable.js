@@ -23,23 +23,19 @@ const useStyles = makeStyles((theme)=>({
   },
 }));
 
-
-
-
 export default function UserTable(props)
 {
   const classes = useStyles();
 
   const [ users, setUsers ] = useState([])
   
-//  useEffect(()=> {
-//    axios.get("https://localhost:5001/api/Employee")
-//    .then((res)=>{
-//     setUsers(res.data);    
-//     });
-//   },[]);
+ useEffect(()=> {
+   axios.get("https://localhost:5001/api/Employee")
+   .then((res)=>{
+    setUsers(res.data);    
+    });
+  },[]);
  
-
 return(
   
   <TableContainer component={Paper}>
@@ -56,8 +52,8 @@ return(
       </tr>
     </thead>
     <tbody>
-      {props.users.length  > 0 ? (
-        props.users.map(employee => (
+      {users.length  > 0 ? (
+        users.map(employee => (
           <tr key={employee.id}>
             
             <td>{employee.employeeid}</td>
