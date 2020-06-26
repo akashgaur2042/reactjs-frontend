@@ -1,0 +1,12 @@
+.background {
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top center;
+}
+
+@media (min-width: 650px ) {
+    .background {
+        background-position: center center;
+    }
+}

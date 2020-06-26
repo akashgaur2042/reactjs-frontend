@@ -1,0 +1,7 @@
+{
+    "mock":[
+        {
+           "id":1, "username": "Akash", "password":"admin"
+        }
+    ]
+}
