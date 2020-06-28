@@ -66,7 +66,7 @@ const EditUserForm = props => {
     <form
       onSubmit={event => {
         event.preventDefault()
-        props.updateUser(user.id, user)
+        props.updateUser(Employeeid, user)
 
     
       }}

@@ -28,6 +28,8 @@ export default function UserTable(props)
   const classes = useStyles();
 
   const [ users, setUsers ] = useState([])
+
+  console.log(users.name);
   
  useEffect(()=> {
    axios.get("https://localhost:5001/api/Employee")
@@ -35,6 +37,12 @@ export default function UserTable(props)
     setUsers(res.data);    
     });
   },[]);
+
+  const deleteUser = id => {
+    
+
+    setUsers(users.filter(user => user.id !== id))
+  }
  
 return(
   
@@ -62,14 +70,15 @@ return(
             <td>{employee.leaves}</td>
             <td>
                
-              <Fab color="primary" aria-label="edit"  onClick={() => {
-                props.editRow(employee)
+              <Fab color="primary" aria-label="edit"  
+              onClick={() => { 
+              props.editRow(employee)
               }}>
               <EditIcon />
               </Fab>&nbsp;&nbsp;&nbsp;
               <Button
               variant={'contained'} 
-                onClick={() => props.deleteUser(employee.id)}
+                onClick={() => deleteUser(employee.id)}
                 className="button muted-button"
               >
               <Grid container className={classes.root}>

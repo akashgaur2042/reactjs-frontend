@@ -18,6 +18,7 @@ import AddUserForm from './forms/AddUserForm'
 import EditUserForm from './forms/EditUserForm'
 import logo_1 from './logo/add_logo.PNG';
 import logo_2 from './logo/edit_logo.PNG';
+import ClassComponent from './forms/ClassComponent';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -94,7 +95,7 @@ const styles = (theme) => ({
 		window.location.href = "/";
 		}
 
-	const addUser = user => {
+	    const addUser = user => {
 			user.id = users.length + 1
 			setUsers([ ...users, user ])
 		}
@@ -104,6 +105,7 @@ const styles = (theme) => ({
 	
 			setUsers(users.filter(user => user.id !== id))
 		}
+
 		const updateUser = (id,updatedUser) => {
 			setEditing(false)
 			setUsers(users.map(user => (user.id === id ? updatedUser : user)))
@@ -111,9 +113,9 @@ const styles = (theme) => ({
 
 		const editRow = user => {
 			setEditing(true)
-	
 			setCurrentUser({ id: user.id, name: user.name, employeeid:user.employeeid,salary:user.salary,leaves:user.leaves })
 		}
+
 	return (
 	<React.Fragment>
 		<div className={classes.root}>
@@ -173,7 +175,7 @@ const styles = (theme) => ({
 					  <Fragment>
 					  <img src={logo_1} alt="add_logo" />
 						  <h2>Add Employee</h2>
-						  <AddUserForm addUser={addUser}  />
+						  <ClassComponent addUser={addUser}  />
 					  </Fragment>
 				  )}
 			  </div>

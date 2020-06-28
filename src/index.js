@@ -5,6 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import login from './login/login';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import ClassComponent from './forms/ClassComponent';
 
 
 
@@ -14,6 +15,7 @@ ReactDOM.render(
     <Switch>
       <Route exact path="/"  component={login} />
       <Route exact path="/App" component={App} />
+      <Route exact path="/ClassComponent" component={ClassComponent} />
       
     </Switch>
   </BrowserRouter>,

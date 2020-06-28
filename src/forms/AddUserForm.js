@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
@@ -8,6 +8,9 @@ import clsx from 'clsx';
 import { green } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
+import ValidationMessage from './ValidationMessage'
+
+
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -27,57 +30,125 @@ const useStyles = makeStyles((theme) => ({
 		margin: theme.spacing(1),
 		position: 'relative',
 	  },
-	buttonSuccess: {
-		backgroundColor: green[500],
-		'&:hover': {
-		  backgroundColor: green[700],
-		}},
-		  buttonProgress: {
-			color: green[500],
-			position: 'absolute',
-			top: '50%',
-			left: '50%',
-			marginTop: -12,
-			marginLeft: -12,
-		  }
+	
 		}));
+
+	
 
 
 const AddUserForm = props => {
 
+	
+
 	const classes = useStyles();
+	// let history = useHistory();
 	  
 	const initialFormState = {  name: '', employeeid: '', salary:'',leaves:'' }
 	const [ user, setUser ] = useState(initialFormState) 
 
 	
-	  const[redirect, setRedirect]=useState(false);
 
-	  useEffect(() => {
-		const timer = setTimeout(() => setRedirect({redirect: true}), 20000);
+	function refreshPage() {
+		const timer = setTimeout(() =>{window.location.reload(false);}, 5000);
 		return () => clearTimeout(timer);
-
-	}, []);
+	  }
 	
 	
-	const handleInputChange = event => {
-		const { name, value } = event.target
+	// const handleInputChange = event => {
+	// 	const { name, value } = event.target
 
-		setUser({ ...user, [name]: value })
-	}
+	// 	setUser({ ...user, [name]: value })
+	// }
+	
 	const Name=user.name;
 	const Employeeid=user.employeeid;
 	const Salary=user.salary;
 	const Leaves=user.leaves;
 
+	const [nameValid, setNameValid]=useState(false);
+	const [employeeidValid, setEmployeeidValid]=useState(false);
+	const [salaryValid, setSalaryValid]=useState(false);
+	const [leavesValid, setLeavesValid]=useState(false);
+	const [formValid, setFormValid]=useState(false);
+	const [errorMsg, setErrorMsg]=useState({});
+
+
+	function validateForm() {
+		setFormValid ( nameValid && employeeidValid && salaryValid && leavesValid)
+	  }
+
 	
 
+	 function validateName() {
+		setNameValid(true);
+		 setErrorMsg({...useState.errorMsg})
+	
+		if (Name.length < 1) {
+			setNameValid(false);
+		  errorMsg.username = 'Must be at least 1 characters long'
+		}
+	
+		setNameValid({nameValid, errorMsg}, validateForm)
+	  }
 	  
+	  const updateName = (Name) => {
+		setUser({Name}, validateName)
+	  }
 
+
+	  function validateEmployeeid() {
 		
+		setEmployeeidValid(true);
+		var errorMsg = {...useState.errorMsg}
+	
+		// checks for format _@_._
+		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(Employeeid)){
+			employeeidValid(false);
+		  errorMsg.Employeeid = 'Invalid email format'
+		}
+	
+		setEmployeeidValid({employeeidValid, errorMsg}, validateForm)
+	  }
+
+	  const updateEmployeeid = (Employeeid) => {
+		setUser({Employeeid}, validateEmployeeid)
+	  }
+
+		function validateSalary (){
+		
+		setSalaryValid(true);
+		 var errorMsg = {...useState.errorMsg}
+	
+		if (Salary.length < 6) {
+			setSalaryValid(false);
+		  errorMsg.Salary = 'Password must be at least 6 characters long';
+		} 
+	
+		setSalaryValid({salaryValid, errorMsg}, validateForm);
+	  }
+
+	  const updateSalary = (Salary) => {
+		setUser({Salary}, validateSalary)
+	  }
+
+	  function validateLeaves (){
+		
+		setLeavesValid(true);
+		var errorMsg = {...useState.errorMsg}
+	
+		if (Leaves.length < 2) {
+			setLeavesValid(false);
+		  errorMsg.Salary = 'Password must be at least 2 characters long';
+		} 
+	
+		setLeavesValid({leavesValid, errorMsg}, validateForm);
+	  }
+	  const updateLeaves = (Leaves) => {
+		setUser({Leaves}, validateLeaves)
+	  }
 
 	 return (
-		<form
+		<form action='#'
 		
 		onSubmit = {event => {
 				event.preventDefault();
@@ -85,16 +156,14 @@ const AddUserForm = props => {
 				  .then(res => {
 					console.log(res);
 					console.log(res.data);
+					
 			})
 				
-					if (!user.name || !user.employeeid || !user.salary || !user.leaves) return 
+
+
 					
-					props.addUser(user)
 					setUser(initialFormState)
-				
-			
-				 
-			  }}
+				}}
 
 		>
 		<TextField
@@ -106,11 +175,15 @@ const AddUserForm = props => {
 			  startAdornment: <InputAdornment position="start"></InputAdornment>,
 			}}
 			
-			onChange={handleInputChange}
+			// onChange={handleInputChange}
+
+			onChange={(e) => updateName(e.target.value)}
 			value={user.name}
   
 			variant="outlined"
-		  /><br/>
+		  />
+		  <ValidationMessage valid={useState.validateName} message={errorMsg.Name} />
+		  <br/>
 
 
 
@@ -122,12 +195,15 @@ const AddUserForm = props => {
           InputProps={{
             startAdornment: <InputAdornment position="start"></InputAdornment>,
 		  }}
-		//   value={employeeid}
-		  onChange={handleInputChange}
+		
+		//   onChange={handleInputChange}
+		onChange={(e) => updateEmployeeid(e.target.value)}
 		  value={user.employeeid}
-		//   onChange={e => setUser(e.target.value)}
+		
 		  variant="outlined"
-        /><br/>
+		/>
+		<ValidationMessage Valid={useState.employeeidValid} message={errorMsg.Employeeid} />
+		<br/>
 		
 		<TextField
 		
@@ -138,12 +214,15 @@ const AddUserForm = props => {
           InputProps={{
             startAdornment: <InputAdornment position="start">INR.</InputAdornment>,
 		  }}
-		//   value={salary}
-		  onChange={handleInputChange}
+		
+		//   onChange={handleInputChange}
+		onChange={(e) => updateSalary(e.target.value)}
 		  value={user.salary}
-		//   onChange={e => setUser(e.target.value)}
+		
 		  variant="outlined"
-		/><br/>
+		/>
+		<ValidationMessage Valid={useState.salaryValid} message={errorMsg.Salary} />
+		<br/>
 		
 		<TextField
 		
@@ -154,14 +233,17 @@ const AddUserForm = props => {
           InputProps={{
             startAdornment: <InputAdornment position="start"></InputAdornment>,
 		  }}
-		//   value={leaves}
-		  onChange={handleInputChange}
+		
+		//   onChange={handleInputChange}
+		  onChange={(e) => updateLeaves(e.target.value)}
 		  value={user.leaves}
-		//   onChange={e => setUser(e.target.value)}
+		
 		  
 
           variant="outlined"
-        /><br/><br/>
+		/>
+		<ValidationMessage Valid={useState.leavesValid} message={errorMsg.Leaves} />
+		<br/><br/>
 
 
 		<Grid container justify="center">
@@ -173,12 +255,11 @@ const AddUserForm = props => {
           variant="contained"
 		  color="primary"
 		  type="submit"
+		  disabled={!useState.formValid}
          
-		//   onClick={addValues}
 
-		
-		  
-        >
+		onClick={refreshPage}
+		>
           Save
         </Button>
         
@@ -193,4 +274,4 @@ const AddUserForm = props => {
 }
 
 
-export default AddUserForm
+export default  AddUserForm

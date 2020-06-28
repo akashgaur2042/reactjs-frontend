@@ -12,9 +12,6 @@ import { styled } from '@material-ui/core/styles';
 import { compose,spacing, palette,shadows,typography } from '@material-ui/system';
 import logo from '../logo/logo_2.png';
 import axios from 'axios';
-
-
-
 import InputAdornment from '@material-ui/core/InputAdornment';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import clsx from 'clsx';
@@ -102,10 +99,26 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(2),
     },
   }))(MuiDialogContent);
+
+
+  const validEmailRegex = RegExp(
+    /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+  );
+  const validateForm = errors => {
+    let valid = true;
+    Object.values(errors).forEach(val => val.length > 0 && (valid = false));
+    return valid;
+  };
+
+ 
   
 function Login() {
 
   const [open, setOpen] = React.useState(false);
+  const initialFormState = {  username: '', password: '' }
+  const [ error, setError ] = useState(initialFormState) 
+  
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -118,39 +131,9 @@ function Login() {
     let history = useHistory();
     const [username, setUsername] = useState("");
     const [password, setPassword] = React.useState({password:'',showPassword: false,});
-    const [usernameError, setUsernameError]=useState("");
-    const [passwordError, setPasswordError]=useState("");
+ 
 
 
-    const valid =()=>
-    {
-      if(username.length<1)
-      {
-        setUsernameError({
-          usernameError:"Enter Username"
-        })
-      }
-        else if(password.length<1)
-        {
-          setPasswordError({
-          passwordError:"Enter Password"
-        })
-      }
-        else if(username.length<1 && password.length<1)
-        {
-          setUsernameError({
-            usernameError:"Enter Username"
-          })
-
-          setPasswordError({
-            passwordError:"Enter Password"
-          })
-        }
-
-        else{
-          return true;
-        }
-    }
     const handleClickShowPassword = () => {
         setPassword({ ...password, showPassword: !password.showPassword });
       };
@@ -211,6 +194,41 @@ function Login() {
        
       
       }
+
+      const handleChange = (event) => {
+        event.preventDefault();
+        const { name, value } = event.target;
+        let errors = useState.errors;
+    
+        switch (name) {
+          
+          case 'username': 
+          
+            errors.username = 
+              validEmailRegex.test(value)
+                ? ''
+                :  'User E-mail is not valid!';
+            break;
+            
+          case 'password': 
+          
+            errors.password = 
+              value.length < 4
+                ?'Password must be at least 4 characters long!'
+                : '';
+            break;
+    
+          
+    
+          default:
+            break;
+        }
+    
+        setError({error, [name]: value});
+        
+      }
+      const usernameError=error.username;
+      const passwordError=error.password;
     
     
 return (
@@ -273,11 +291,15 @@ return (
       id="input-with-icon-grid"  
       placeholder="Enter Your username"
       label="Username"
-      onChange={e => setUsername(e.target.value)}
+      // onChange={e => setUsername(e.target.value)}
+      onChange={handleChange}
       margin="normal"
       size="large"
-      />
-      <p style={{color:"red", font:"14px"}}>{usernameError}</p>
+      noValidate
+      /><br/>
+      {usernameError.length > 0 && 
+        <span className='error'>{usernameError}</span>}
+      
       </FormControl>
       </Grid>
       </Grid>
@@ -296,7 +318,8 @@ return (
                       placeholder="Enter Password"
                       label="Password"
                       
-                      onChange={e => setPassword(e.target.value)}
+                      // onChange={e => setPassword(e.target.value)}
+                      onChange={handleChange}
 
                       margin="normal"
 
@@ -313,7 +336,8 @@ return (
                             </IconButton>
                           </InputAdornment>
                         }/>  
-                        <p style={{color:"red", font:"14px"}}>{passwordError}</p>
+                        {passwordError.length > 0 && 
+                          <span className='error'>{passwordError}</span>}
             </FormControl>  
             
               
