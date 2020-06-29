@@ -1,12 +1,14 @@
 import React from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-import { green } from '@material-ui/core/colors';
+
 import { Button } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import clsx from 'clsx';
 import Grid from '@material-ui/core/Grid';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 
 
@@ -18,6 +20,10 @@ const validateForm = errors => {
   Object.values(errors).forEach(val => val.length > 0 && (valid = false));
   return valid;
 };
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 
 export default class ClassComponent extends React.Component {
@@ -40,6 +46,7 @@ export default class ClassComponent extends React.Component {
           leaves:'',
         },
         flag:false,
+        open:false
       };
       
     
@@ -47,7 +54,10 @@ export default class ClassComponent extends React.Component {
   useStyles = makeStyles((theme) => ({
 	root: {
 	  display: 'flex',
-	  flexWrap: 'wrap',
+    flexWrap: 'wrap',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    }
 	},
 	margin: {
 	  margin: theme.spacing(1),
@@ -67,9 +77,24 @@ export default class ClassComponent extends React.Component {
 		}));
 
    refreshPage=()=> {
-    const timer = setTimeout(() =>{window.location.reload(false);}, 5000);
+    const timer = setTimeout(() =>{window.location.reload(false);}, 3000);
     return () => clearTimeout(timer);
   }
+
+  // const [open, setOpen] = React.this.state(false);
+
+   handleClick = () => {
+    this.setState.open=true;
+  };
+
+   handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+  }
+
+    // this.open=false;
+
 
   
 
@@ -271,12 +296,18 @@ export default class ClassComponent extends React.Component {
 		  type="submit"
         //   disabled={!this.formValid}
         disabled={this.flag}
+        // onClick={this.handleClick}
          
 
 		onClick={this.refreshPage}
 		>
           Save
         </Button>
+        <Snackbar open={this.open} autoHideDuration={3000} onClose={this.handleClose}>
+        <Alert onClose={this.handleClose} severity="success">
+         Employee Registered!
+        </Alert>
+      </Snackbar>
         
         </div>
 			</div>

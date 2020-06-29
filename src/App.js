@@ -14,7 +14,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import { withStyles } from '@material-ui/core/styles';
 import UserTable from './tables/UserTable';
-import AddUserForm from './forms/AddUserForm'
 import EditUserForm from './forms/EditUserForm'
 import logo_1 from './logo/add_logo.PNG';
 import logo_2 from './logo/edit_logo.PNG';
@@ -72,9 +71,9 @@ const styles = (theme) => ({
  
   const App = () => {
 	const usersData = [
-		{ id: 1, name: 'Tania', employeeid: 'floppydiskette', salary: '10000', leaves:'1' },
-		{ id: 2, name: 'Craig', employeeid: 'akash.gaur', salary: '20000', leaves:'2' },
-		{ id: 3, name: 'Ben', employeeid: 'anuj.thakur', salary: '30000', leaves:'3' },
+		{ id: 1, name: 'Anumia', employeeid: 'anumia.rawat', salary: '10000', leaves:'1' },
+		{ id: 2, name: 'Akash', employeeid: 'akash.gaur', salary: '20000', leaves:'2' },
+		{ id: 3, name: 'Anuj', employeeid: 'anuj.thakur', salary: '30000', leaves:'3' },
 	]
 
 
@@ -103,7 +102,7 @@ const styles = (theme) => ({
 		const deleteUser = id => {
 			setEditing(false)
 	
-			setUsers(users.filter(user => user.id !== id))
+			setUsers(users.filter(user => user.employeeid !== id))
 		}
 
 		const updateUser = (id,updatedUser) => {
@@ -150,7 +149,7 @@ const styles = (theme) => ({
 		<Paper className={classes.paper} >
 				<div className="flex-large">
 					<h2>View Employees</h2><br/><br/>
-					<UserTable   users={users} editRow={editRow} deleteUser={deleteUser} />
+					<UserTable   addUser={addUser} editRow={editRow} deleteUser={deleteUser} />
 				</div>
 				</Paper>
 		</Grid>

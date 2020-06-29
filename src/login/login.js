@@ -116,7 +116,7 @@ function Login() {
 
   const [open, setOpen] = React.useState(false);
   const initialFormState = {  username: '', password: '' }
-  const [ error, setError ] = useState(initialFormState) 
+  const [ errors, setError ] = useState(initialFormState) 
   
 
 
@@ -224,11 +224,15 @@ function Login() {
             break;
         }
     
-        setError({error, [name]: value});
+        setError({errors, [name]: value});
+        
+       
         
       }
-      const usernameError=error.username;
-      const passwordError=error.password;
+      
+        
+      
+      
     
     
 return (
@@ -286,20 +290,18 @@ return (
       </Grid>
       <Grid item>
       <FormControl className={clsx(classes.margin, classes.textField)} variant="filled">
-      <InputLabel htmlFor="outlined-adornment-password">Username</InputLabel>
+      <InputLabel htmlFor="outlined-adornment-username">Username</InputLabel>
       <FilledInput
       id="input-with-icon-grid"  
       placeholder="Enter Your username"
       label="Username"
-      // onChange={e => setUsername(e.target.value)}
-      onChange={handleChange}
+      onChange={e => setUsername(e.target.value)}
+      // onChange={handleChange}
       margin="normal"
       size="large"
       noValidate
       /><br/>
-      {usernameError.length > 0 && 
-        <span className='error'>{usernameError}</span>}
-      
+     
       </FormControl>
       </Grid>
       </Grid>
@@ -318,8 +320,8 @@ return (
                       placeholder="Enter Password"
                       label="Password"
                       
-                      // onChange={e => setPassword(e.target.value)}
-                      onChange={handleChange}
+                      onChange={e => setPassword(e.target.value)}
+                      // onChange={handleChange}
 
                       margin="normal"
 
@@ -336,8 +338,7 @@ return (
                             </IconButton>
                           </InputAdornment>
                         }/>  
-                        {passwordError.length > 0 && 
-                          <span className='error'>{passwordError}</span>}
+                       
             </FormControl>  
             
               

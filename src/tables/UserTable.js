@@ -38,10 +38,14 @@ export default function UserTable(props)
     });
   },[]);
 
-  const deleteUser = id => {
+  const deleteUser = employeeid => {
     
-
-    setUsers(users.filter(user => user.id !== id))
+    axios.delete(`https://localhost:5001/api/Employee/${users.employeeid}`)
+    .then(res => {
+      console.log(res);
+      console.log(res.data);
+    })
+    setUsers(users.filter(user => user.employeeid !== employeeid))
   }
  
 return(

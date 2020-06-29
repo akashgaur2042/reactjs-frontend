@@ -58,7 +58,13 @@ const EditUserForm = props => {
 					console.log(res);
 					console.log(res.data);
 					})
-	  }
+    }
+    
+   const  refreshPage=()=> {
+      const timer = setTimeout(() =>{window.location.reload(false);}, 3000);
+      return () => clearTimeout(timer);
+    }
+  
   
 
 
@@ -128,8 +134,8 @@ const EditUserForm = props => {
     onChange={handleInputChange}
     variant="outlined"
       /><br/><br/>
-      <Button type='submit' variant={'contained'} color={'primary'} onClick={update}>Update Employee</Button>&nbsp;
-      <Button type='submit' variant={'contained'} color={'primary'} onClick={() => props.setEditing(false)} className="button muted-button">
+      <Button type='submit' variant={'contained'} color={'primary'} onClick={()=>{update(); refreshPage(); }} >Update Employee</Button>&nbsp;
+      <Button type='submit' variant={'contained'} color={'primary'} onClick={() => props.setEditing(false)}  className="button muted-button">
         Cancel
       </Button>
     </form>
