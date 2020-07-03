@@ -1,277 +1,277 @@
-import React, { useState } from 'react'
-import { Button } from '@material-ui/core';
-import InputAdornment from '@material-ui/core/InputAdornment';
+// import React, { useState } from 'react'
+// import { Button } from '@material-ui/core';
+// import InputAdornment from '@material-ui/core/InputAdornment';
 
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import clsx from 'clsx';
-import { green } from '@material-ui/core/colors';
-import Grid from '@material-ui/core/Grid';
-import axios from 'axios';
-import ValidationMessage from './ValidationMessage'
+// import { makeStyles } from '@material-ui/core/styles';
+// import TextField from '@material-ui/core/TextField';
+// import clsx from 'clsx';
+
+// import Grid from '@material-ui/core/Grid';
+// import axios from 'axios';
+// import ValidationMessage from './ValidationMessage'
 
 
 
-const useStyles = makeStyles((theme) => ({
-	root: {
-	  display: 'flex',
-	  flexWrap: 'wrap',
-	},
-	margin: {
-	  margin: theme.spacing(1),
-	},
-	withoutLabel: {
-	  marginTop: theme.spacing(3),
-	},
-	textField: {
-	  width: '25ch',
-	},
-	wrapper: {
-		margin: theme.spacing(1),
-		position: 'relative',
-	  },
+// const useStyles = makeStyles((theme) => ({
+// 	root: {
+// 	  display: 'flex',
+// 	  flexWrap: 'wrap',
+// 	},
+// 	margin: {
+// 	  margin: theme.spacing(1),
+// 	},
+// 	withoutLabel: {
+// 	  marginTop: theme.spacing(3),
+// 	},
+// 	textField: {
+// 	  width: '25ch',
+// 	},
+// 	wrapper: {
+// 		margin: theme.spacing(1),
+// 		position: 'relative',
+// 	  },
 	
-		}));
-
-	
-
-
-const AddUserForm = props => {
+// 		}));
 
 	
 
-	const classes = useStyles();
-	// let history = useHistory();
+
+// const AddUserForm = props => {
+
+	
+
+// 	const classes = useStyles();
+// 	// let history = useHistory();
 	  
-	const initialFormState = {  name: '', employeeid: '', salary:'',leaves:'' }
-	const [ user, setUser ] = useState(initialFormState) 
+// 	const initialFormState = {  name: '', employeeid: '', salary:'',leaves:'' }
+// 	const [ user, setUser ] = useState(initialFormState) 
 
 	
 
-	function refreshPage() {
-		const timer = setTimeout(() =>{window.location.reload(false);}, 5000);
-		return () => clearTimeout(timer);
-	  }
+// 	function refreshPage() {
+// 		const timer = setTimeout(() =>{window.location.reload(false);}, 5000);
+// 		return () => clearTimeout(timer);
+// 	  }
 	
 	
-	// const handleInputChange = event => {
-	// 	const { name, value } = event.target
+// 	// const handleInputChange = event => {
+// 	// 	const { name, value } = event.target
 
-	// 	setUser({ ...user, [name]: value })
-	// }
+// 	// 	setUser({ ...user, [name]: value })
+// 	// }
 	
-	const Name=user.name;
-	const Employeeid=user.employeeid;
-	const Salary=user.salary;
-	const Leaves=user.leaves;
+// 	const Name=user.name;
+// 	const Employeeid=user.employeeid;
+// 	const Salary=user.salary;
+// 	const Leaves=user.leaves;
 
-	const [nameValid, setNameValid]=useState(false);
-	const [employeeidValid, setEmployeeidValid]=useState(false);
-	const [salaryValid, setSalaryValid]=useState(false);
-	const [leavesValid, setLeavesValid]=useState(false);
-	const [formValid, setFormValid]=useState(false);
-	const [errorMsg, setErrorMsg]=useState({});
+// 	const [nameValid, setNameValid]=useState(false);
+// 	const [employeeidValid, setEmployeeidValid]=useState(false);
+// 	const [salaryValid, setSalaryValid]=useState(false);
+// 	const [leavesValid, setLeavesValid]=useState(false);
+// 	const [formValid, setFormValid]=useState(false);
+// 	const [errorMsg, setErrorMsg]=useState({});
 
 
-	function validateForm() {
-		setFormValid ( nameValid && employeeidValid && salaryValid && leavesValid)
-	  }
+// 	function validateForm() {
+// 		setFormValid ( nameValid && employeeidValid && salaryValid && leavesValid)
+// 	  }
 
 	
 
-	 function validateName() {
-		setNameValid(true);
-		 setErrorMsg({...useState.errorMsg})
+// 	 function validateName() {
+// 		setNameValid(true);
+// 		 setErrorMsg({...useState.errorMsg})
 	
-		if (Name.length < 1) {
-			setNameValid(false);
-		  errorMsg.username = 'Must be at least 1 characters long'
-		}
+// 		if (Name.length < 1) {
+// 			setNameValid(false);
+// 		  errorMsg.username = 'Must be at least 1 characters long'
+// 		}
 	
-		setNameValid({nameValid, errorMsg}, validateForm)
-	  }
+// 		setNameValid({nameValid, errorMsg}, validateForm)
+// 	  }
 	  
-	  const updateName = (Name) => {
-		setUser({Name}, validateName)
-	  }
+// 	  const updateName = (Name) => {
+// 		setUser({Name}, validateName)
+// 	  }
 
 
-	  function validateEmployeeid() {
+// 	  function validateEmployeeid() {
 		
-		setEmployeeidValid(true);
-		var errorMsg = {...useState.errorMsg}
+// 		setEmployeeidValid(true);
+// 		var errorMsg = {...useState.errorMsg}
 	
-		// checks for format _@_._
-		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(Employeeid)){
-			employeeidValid(false);
-		  errorMsg.Employeeid = 'Invalid email format'
-		}
+// 		// checks for format _@_._
+// 		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(Employeeid)){
+// 			employeeidValid(false);
+// 		  errorMsg.Employeeid = 'Invalid email format'
+// 		}
 	
-		setEmployeeidValid({employeeidValid, errorMsg}, validateForm)
-	  }
+// 		setEmployeeidValid({employeeidValid, errorMsg}, validateForm)
+// 	  }
 
-	  const updateEmployeeid = (Employeeid) => {
-		setUser({Employeeid}, validateEmployeeid)
-	  }
+// 	  const updateEmployeeid = (Employeeid) => {
+// 		setUser({Employeeid}, validateEmployeeid)
+// 	  }
 
-		function validateSalary (){
+// 		function validateSalary (){
 		
-		setSalaryValid(true);
-		 var errorMsg = {...useState.errorMsg}
+// 		setSalaryValid(true);
+// 		 var errorMsg = {...useState.errorMsg}
 	
-		if (Salary.length < 6) {
-			setSalaryValid(false);
-		  errorMsg.Salary = 'Password must be at least 6 characters long';
-		} 
+// 		if (Salary.length < 6) {
+// 			setSalaryValid(false);
+// 		  errorMsg.Salary = 'Password must be at least 6 characters long';
+// 		} 
 	
-		setSalaryValid({salaryValid, errorMsg}, validateForm);
-	  }
+// 		setSalaryValid({salaryValid, errorMsg}, validateForm);
+// 	  }
 
-	  const updateSalary = (Salary) => {
-		setUser({Salary}, validateSalary)
-	  }
+// 	  const updateSalary = (Salary) => {
+// 		setUser({Salary}, validateSalary)
+// 	  }
 
-	  function validateLeaves (){
+// 	  function validateLeaves (){
 		
-		setLeavesValid(true);
-		var errorMsg = {...useState.errorMsg}
+// 		setLeavesValid(true);
+// 		var errorMsg = {...useState.errorMsg}
 	
-		if (Leaves.length < 2) {
-			setLeavesValid(false);
-		  errorMsg.Salary = 'Password must be at least 2 characters long';
-		} 
+// 		if (Leaves.length < 2) {
+// 			setLeavesValid(false);
+// 		  errorMsg.Salary = 'Password must be at least 2 characters long';
+// 		} 
 	
-		setLeavesValid({leavesValid, errorMsg}, validateForm);
-	  }
-	  const updateLeaves = (Leaves) => {
-		setUser({Leaves}, validateLeaves)
-	  }
+// 		setLeavesValid({leavesValid, errorMsg}, validateForm);
+// 	  }
+// 	  const updateLeaves = (Leaves) => {
+// 		setUser({Leaves}, validateLeaves)
+// 	  }
 
-	 return (
-		<form action='#'
+// 	 return (
+// 		<form action='#'
 		
-		onSubmit = {event => {
-				event.preventDefault();
-				axios.post(`https://localhost:5001/api/Employee`, { Name,Employeeid,Salary,Leaves })
-				  .then(res => {
-					console.log(res);
-					console.log(res.data);
+// 		onSubmit = {event => {
+// 				event.preventDefault();
+// 				axios.post(`https://localhost:5001/api/Employee`, { Name,Employeeid,Salary,Leaves })
+// 				  .then(res => {
+// 					console.log(res);
+// 					console.log(res.data);
 					
-			})
+// 			})
 				
 
 
 					
-					setUser(initialFormState)
-				}}
+// 					setUser(initialFormState)
+// 				}}
 
-		>
-		<TextField
-			label="Name: "
-			name="name"
-			id="outlined-start-adornment"
-			className={clsx(classes.margin, classes.textField)}
-			InputProps={{
-			  startAdornment: <InputAdornment position="start"></InputAdornment>,
-			}}
+// 		>
+// 		<TextField
+// 			label="Name: "
+// 			name="name"
+// 			id="outlined-start-adornment"
+// 			className={clsx(classes.margin, classes.textField)}
+// 			InputProps={{
+// 			  startAdornment: <InputAdornment position="start"></InputAdornment>,
+// 			}}
 			
-			// onChange={handleInputChange}
+// 			// onChange={handleInputChange}
 
-			onChange={(e) => updateName(e.target.value)}
-			value={user.name}
+// 			onChange={(e) => updateName(e.target.value)}
+// 			value={user.name}
   
-			variant="outlined"
-		  />
-		  <ValidationMessage valid={useState.validateName} message={errorMsg.Name} />
-		  <br/>
+// 			variant="outlined"
+// 		  />
+// 		  <ValidationMessage valid={useState.validateName} message={errorMsg.Name} />
+// 		  <br/>
 
 
 
-			<TextField
-		  label="Employee ID:"
-		  name="employeeid"
-          id="outlined-start-adornment"
-          className={clsx(classes.margin, classes.textField)}
-          InputProps={{
-            startAdornment: <InputAdornment position="start"></InputAdornment>,
-		  }}
+// 			<TextField
+// 		  label="Employee ID:"
+// 		  name="employeeid"
+//           id="outlined-start-adornment"
+//           className={clsx(classes.margin, classes.textField)}
+//           InputProps={{
+//             startAdornment: <InputAdornment position="start"></InputAdornment>,
+// 		  }}
 		
-		//   onChange={handleInputChange}
-		onChange={(e) => updateEmployeeid(e.target.value)}
-		  value={user.employeeid}
+// 		//   onChange={handleInputChange}
+// 		onChange={(e) => updateEmployeeid(e.target.value)}
+// 		  value={user.employeeid}
 		
-		  variant="outlined"
-		/>
-		<ValidationMessage Valid={useState.employeeidValid} message={errorMsg.Employeeid} />
-		<br/>
+// 		  variant="outlined"
+// 		/>
+// 		<ValidationMessage Valid={useState.employeeidValid} message={errorMsg.Employeeid} />
+// 		<br/>
 		
-		<TextField
+// 		<TextField
 		
-		  label="Salary:"
-		  name="salary"
-          id="outlined-start-adornment"
-          className={clsx(classes.margin, classes.textField)}
-          InputProps={{
-            startAdornment: <InputAdornment position="start">INR.</InputAdornment>,
-		  }}
+// 		  label="Salary:"
+// 		  name="salary"
+//           id="outlined-start-adornment"
+//           className={clsx(classes.margin, classes.textField)}
+//           InputProps={{
+//             startAdornment: <InputAdornment position="start">INR.</InputAdornment>,
+// 		  }}
 		
-		//   onChange={handleInputChange}
-		onChange={(e) => updateSalary(e.target.value)}
-		  value={user.salary}
+// 		//   onChange={handleInputChange}
+// 		onChange={(e) => updateSalary(e.target.value)}
+// 		  value={user.salary}
 		
-		  variant="outlined"
-		/>
-		<ValidationMessage Valid={useState.salaryValid} message={errorMsg.Salary} />
-		<br/>
+// 		  variant="outlined"
+// 		/>
+// 		<ValidationMessage Valid={useState.salaryValid} message={errorMsg.Salary} />
+// 		<br/>
 		
-		<TextField
+// 		<TextField
 		
-		  label="Leaves"
-		  name="leaves"
-          id="outlined-start-adornment"
-          className={clsx(classes.margin, classes.textField)}
-          InputProps={{
-            startAdornment: <InputAdornment position="start"></InputAdornment>,
-		  }}
+// 		  label="Leaves"
+// 		  name="leaves"
+//           id="outlined-start-adornment"
+//           className={clsx(classes.margin, classes.textField)}
+//           InputProps={{
+//             startAdornment: <InputAdornment position="start"></InputAdornment>,
+// 		  }}
 		
-		//   onChange={handleInputChange}
-		  onChange={(e) => updateLeaves(e.target.value)}
-		  value={user.leaves}
+// 		//   onChange={handleInputChange}
+// 		  onChange={(e) => updateLeaves(e.target.value)}
+// 		  value={user.leaves}
 		
 		  
 
-          variant="outlined"
-		/>
-		<ValidationMessage Valid={useState.leavesValid} message={errorMsg.Leaves} />
-		<br/><br/>
+//           variant="outlined"
+// 		/>
+// 		<ValidationMessage Valid={useState.leavesValid} message={errorMsg.Leaves} />
+// 		<br/><br/>
 
 
-		<Grid container justify="center">
+// 		<Grid container justify="center">
 			
 			
-		<div className={classes.root}>
-		<div className={classes.wrapper}>
-        <Button
-          variant="contained"
-		  color="primary"
-		  type="submit"
-		  disabled={!useState.formValid}
+// 		<div className={classes.root}>
+// 		<div className={classes.wrapper}>
+//         <Button
+//           variant="contained"
+// 		  color="primary"
+// 		  type="submit"
+// 		  disabled={!useState.formValid}
          
 
-		onClick={refreshPage}
-		>
-          Save
-        </Button>
+// 		onClick={refreshPage}
+// 		>
+//           Save
+//         </Button>
         
-        </div>
-			</div>
-			</Grid>
+//         </div>
+// 			</div>
+// 			</Grid>
 
 
 
-		</form>
-	)
-}
+// 		</form>
+// 	)
+// }
 
 
-export default  AddUserForm
+// export default  AddUserForm

@@ -8,12 +8,17 @@ import DeleteForeverTwoToneIcon from '@material-ui/icons/DeleteForeverTwoTone';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import axios from 'axios';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+
 
 
 
 const useStyles = makeStyles((theme)=>({
   table: {
     minWidth: 650,
+    borderBottom:2
   },
   root: {
     color: theme.palette.text.primary,
@@ -29,19 +34,25 @@ export default function UserTable(props)
 
   const [ users, setUsers ] = useState([])
 
-  console.log(users.name);
   
+  var Employeeid=users.employeeid;
+  const baseUrl="https://localhost:5001/api/Employee/"
  useEffect(()=> {
-   axios.get("https://localhost:5001/api/Employee")
+   axios.get(baseUrl)
    .then((res)=>{
-    setUsers(res.data);    
+    setUsers(res.data);   
+   
     });
   },[]);
 
   const deleteUser = id => {
     
-
-    setUsers(users.filter(user => user.id !== id))
+    axios.delete(baseUrl+id)
+    .then(res => {
+      console.log(res);
+      console.log(res.data);
+    })
+    setUsers(users.filter(user => user.employeeid !== id))
   }
  
 return(
@@ -64,31 +75,27 @@ return(
         users.map(employee => (
           <tr key={employee.id}>
             
+            
             <td>{employee.employeeid}</td>
             <td>{employee.name}</td>
             <td>{employee.salary}</td>
             <td>{employee.leaves}</td>
             <td>
                
-              <Fab color="primary" aria-label="edit"  
+              <Fab size="small" color="primary" aria-label="edit"  
               onClick={() => { 
               props.editRow(employee)
               }}>
-              <EditIcon />
+              <EditIcon fontSize="small"/>
               </Fab>&nbsp;&nbsp;&nbsp;
-              <Button
-              variant={'contained'} 
-                onClick={() => deleteUser(employee.id)}
-                className="button muted-button"
-              >
-              <Grid container className={classes.root}>
-      
-              <Grid item xs={1}>
-              <DeleteForeverTwoToneIcon />
+              
+
+          <IconButton aria-label="delete" className={classes.margin} onClick={() => deleteUser(employee.employeeid)}>
+          <DeleteIcon fontSize="small" />
+         </IconButton>
+             
                
-              </Grid>
-              </Grid>
-              </Button>
+              
               </td>
           </tr>
         ))

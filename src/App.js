@@ -1,4 +1,4 @@
-import React , {useState,Fragment} from 'react';
+import React , {useState,Fragment, useEffect} from 'react';
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -14,12 +14,11 @@ import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import { withStyles } from '@material-ui/core/styles';
 import UserTable from './tables/UserTable';
-import AddUserForm from './forms/AddUserForm'
+import { useHistory } from 'react-router-dom';
 import EditUserForm from './forms/EditUserForm'
 import logo_1 from './logo/add_logo.PNG';
 import logo_2 from './logo/edit_logo.PNG';
-import ClassComponent from './forms/ClassComponent';
-
+import RegistrationUserForm from './forms/RegistrationUserForm';
 const useStyles = makeStyles((theme) => ({
 	root: {
 	  flexGrow: 1,
@@ -36,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
 		color: theme.palette.text.secondary,
 	  }
   }));
-
 const styles = (theme) => ({
     root: {
       margin: 0,
@@ -67,22 +65,27 @@ const styles = (theme) => ({
       padding: theme.spacing(2),
     },
   }))(MuiDialogContent);
-  
- 
- 
   const App = () => {
 	const usersData = [
-		{ id: 1, name: 'Tania', employeeid: 'floppydiskette', salary: '10000', leaves:'1' },
-		{ id: 2, name: 'Craig', employeeid: 'akash.gaur', salary: '20000', leaves:'2' },
-		{ id: 3, name: 'Ben', employeeid: 'anuj.thakur', salary: '30000', leaves:'3' },
+		{ id: 1, name: 'Tania', employeeid: 'tania.sharma', salary: '10000', leaves:'1' }
 	]
-
-
 	const [open, setOpen] = React.useState(false);
 	const initialFormState = { id: null, name: '', employeeid: '', salary:'',leaves:'' }
 	const [ users, setUsers ] = useState(usersData)
 	const [ currentUser, setCurrentUser ] = useState(initialFormState)
 	const [ editing, setEditing ] = useState(false)
+	let history = useHistory();
+	useEffect(()=>
+	{
+		const localStorage_flag=localStorage.getItem('flag');
+		if(localStorage_flag==='true')
+		{
+			return 
+		}
+		else{
+			history.push('/');
+		}
+	});
 	const handleClickOpen = () => {
 	  setOpen(true);
 	};
@@ -94,28 +97,22 @@ const styles = (theme) => ({
         localStorage.clear();
 		window.location.href = "/";
 		}
-
-	    const addUser = user => {
+	const addUser = user => {
 			user.id = users.length + 1
 			setUsers([ ...users, user ])
 		}
-
-		const deleteUser = id => {
+	const deleteUser = id => {
 			setEditing(false)
-	
 			setUsers(users.filter(user => user.id !== id))
 		}
-
-		const updateUser = (id,updatedUser) => {
+	const updateUser = (id,updatedUser) => {
 			setEditing(false)
 			setUsers(users.map(user => (user.id === id ? updatedUser : user)))
 			}
-
-		const editRow = user => {
+	const editRow = user => {
 			setEditing(true)
 			setCurrentUser({ id: user.id, name: user.name, employeeid:user.employeeid,salary:user.salary,leaves:user.leaves })
 		}
-
 	return (
 	<React.Fragment>
 		<div className={classes.root}>
@@ -141,7 +138,6 @@ const styles = (theme) => ({
 			<Typography variant="h5" className={classes.title}>
 			  Employee App
 			</Typography>
-			
 			<Button color="inherit" href="/" onClick={() => logout()}>LOGOUT</Button>
 		  </Toolbar>
 		</AppBar>
@@ -154,11 +150,9 @@ const styles = (theme) => ({
 				</div>
 				</Paper>
 		</Grid>
-
-		<Grid item xs={5}  >
+	<Grid item xs={5}  >
 		<Paper className={classes.paper}>
-	  
-		  <div className="flex-row">
+	  	<div className="flex-row">
 			  <div className="flex-large">
 				  {editing ? (
 					  <Fragment>
@@ -175,7 +169,7 @@ const styles = (theme) => ({
 					  <Fragment>
 					  <img src={logo_1} alt="add_logo" />
 						  <h2>Add Employee</h2>
-						  <ClassComponent addUser={addUser}  />
+						  <RegistrationUserForm addUser={addUser}  />
 					  </Fragment>
 				  )}
 			  </div>

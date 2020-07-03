@@ -45,21 +45,27 @@ const EditUserForm = props => {
   var Employeeid=user.employeeid;
   var Salary=user.salary;
   var Leaves=user.leaves;
+  
   const handleInputChange = event => {
     const { name, value } = event.target
 
     setUser({ ...user, [name]: value })
   }
+  const baseUrl=`https://localhost:5001/api/Employee/`;
   
   function update()
    {
-	  axios.put(`https://localhost:5001/api/Employee`, { Name,Employeeid,Salary,Leaves })
+	  axios.put(baseUrl+  Employeeid, {Name, Employeeid, Salary,Leaves})
 				  .then(res => {
 					console.log(res);
 					console.log(res.data);
 					})
 	  }
   
+   const refreshPage=()=> {
+      const timer = setTimeout(() =>{window.location.reload(false);}, 200);
+      return () => clearTimeout(timer);
+    }
 
 
   return (
@@ -128,7 +134,7 @@ const EditUserForm = props => {
     onChange={handleInputChange}
     variant="outlined"
       /><br/><br/>
-      <Button type='submit' variant={'contained'} color={'primary'} onClick={update}>Update Employee</Button>&nbsp;
+      <Button type='submit' variant={'contained'} color={'primary'} onClick={()=>{update();refreshPage()}}>Update Employee</Button>&nbsp;
       <Button type='submit' variant={'contained'} color={'primary'} onClick={() => props.setEditing(false)} className="button muted-button">
         Cancel
       </Button>

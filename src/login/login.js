@@ -27,18 +27,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import { withStyles } from '@material-ui/core/styles';
-
-
-
-
-
-
-
-
-
-
-
-
 const Box = styled('div')(compose(spacing, palette,typography,shadows));
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -65,7 +53,6 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
       },
   }));
-
   const styles = (theme) => ({
     root: {
       margin: 0,
@@ -78,10 +65,8 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.grey[500],
     },
   });
-
   const DialogTitle = withStyles(styles)((props) => {
-
-    const { children, classes, onClose, ...other } = props;
+  const { children, classes, onClose, ...other } = props;
     return (
       <MuiDialogTitle disableTypography className={classes.root} {...other}>
         <Typography variant="h6">{children}</Typography>
@@ -93,161 +78,75 @@ const useStyles = makeStyles((theme) => ({
       </MuiDialogTitle>
     );
   });
-
   const DialogContent = withStyles((theme) => ({
     root: {
       padding: theme.spacing(2),
     },
   }))(MuiDialogContent);
-
-
-  const validEmailRegex = RegExp(
-    /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
-  );
-  const validateForm = errors => {
-    let valid = true;
-    Object.values(errors).forEach(val => val.length > 0 && (valid = false));
-    return valid;
-  };
-
- 
-  
-function Login() {
-
-  const [open, setOpen] = React.useState(false);
-  const initialFormState = {  username: '', password: '' }
-  const [ error, setError ] = useState(initialFormState) 
-  
-
-
-  const handleClickOpen = () => {
+  function Login() {
+    const [open, setOpen] = React.useState(false);
+    const [flag, setFlag]=useState(true);
+    const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
-
   const classes = useStyles();
     let history = useHistory();
     const [username, setUsername] = useState("");
     const [password, setPassword] = React.useState({password:'',showPassword: false,});
- 
-
-
     const handleClickShowPassword = () => {
         setPassword({ ...password, showPassword: !password.showPassword });
       };
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
       };
-
-      
- 
-      // axios.get("http://localhost:5001/api/User").then((resp)=>{resp.json().then((result)=>{setPassword({password:result.data})})})
-
+    
     function validateForm() {
         return username.length > 0 && password.length > 0;
     }
-   
 
+    const baseUrl=`https://localhost:5001/api/User`;
+
+    
+    
     function handleLogin() {
-
-      // setUsernameError({usernameError:""})
-      // setPasswordError({passwordError:""})
-       
-
-      
-       
-         axios.get("https://localhost:5001/api/User/" +username).then((res)=>{const user=res.data;     
-          
-          const checkUsername=user.username;
-          setUsername({checkUsername});
-
-          const checkPassword=user.password;
-          setUsername({checkPassword});
-          
-          
-          console.warn(user);
-          
-          
-          if(user.username===username)
+      axios.post(baseUrl, { username,password })
+				  .then(res => {
+					console.log(res);
+          console.log(res.data);
+          console.log('response:',res.status);
+          if(res.status===200)
           {
-            if(user.password===password)
-            {
-              const path = '/App';
-              history.push(path)
-            }
-
-            else
-            {
-              alert('Password Incorrect');
-            }
+            setFlag(true);
+            localStorage.setItem('flag',flag)
             
+            history.push('/App');
           }
-          
-          else{
-            alert("Check Username");
-            
-          }
-        })
+          })
 
-       
+    }
+
+
+    function loginDenied()
+    {
+//       if(flag!==false){
+//         window.alert("Username or Password Incorrect");
+// }      
+    }
+
+     
+ 
       
-      }
-
-      const handleChange = (event) => {
-        event.preventDefault();
-        const { name, value } = event.target;
-        let errors = useState.errors;
-    
-        switch (name) {
-          
-          case 'username': 
-          
-            errors.username = 
-              validEmailRegex.test(value)
-                ? ''
-                :  'User E-mail is not valid!';
-            break;
-            
-          case 'password': 
-          
-            errors.password = 
-              value.length < 4
-                ?'Password must be at least 4 characters long!'
-                : '';
-            break;
-    
-          
-    
-          default:
-            break;
-        }
-    
-        setError({error, [name]: value});
-        
-      }
-      const usernameError=error.username;
-      const passwordError=error.password;
-    
-    
 return (
-
-
-  
-  
     <div className={classes.root}  >
-    
-
       <MuiThemeProvider>
-        
-
         <AppBar position="static">
   <Toolbar>
     <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={handleClickOpen}>
       <MenuIcon />
     </IconButton>
-
     <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
     <DialogTitle id="customized-dialog-title" onClose={handleClose}>
       Introduction Card
@@ -263,13 +162,10 @@ return (
         Thank You!
       </Typography>
     </DialogContent>
-    
   </Dialog>
-    
     <Typography variant="h6" className={classes.title}>
       ADMIN LOGIN
     </Typography>
-    
   </Toolbar>
 </AppBar>
 <Grid container spacing={8} justify="center"
@@ -291,16 +187,12 @@ return (
       id="input-with-icon-grid"  
       placeholder="Enter Your username"
       label="Username"
-      // onChange={e => setUsername(e.target.value)}
-      onChange={handleChange}
+      onChange={e => setUsername(e.target.value)}
+      // onChange={handleChange}
       margin="normal"
       size="large"
-      noValidate
       /><br/>
-      {usernameError.length > 0 && 
-        <span className='error'>{usernameError}</span>}
-      
-      </FormControl>
+     </FormControl>
       </Grid>
       </Grid>
       </div><br/>
@@ -317,13 +209,9 @@ return (
           type={password.showPassword ? 'text' : 'password'}
                       placeholder="Enter Password"
                       label="Password"
-                      
-                      // onChange={e => setPassword(e.target.value)}
-                      onChange={handleChange}
-
+                      onChange={e => setPassword(e.target.value)}
+                      // onChange={handleChange}
                       margin="normal"
-
-
                       endAdornment={
                           <InputAdornment position="end">
                             <IconButton
@@ -336,32 +224,20 @@ return (
                             </IconButton>
                           </InputAdornment>
                         }/>  
-                        {passwordError.length > 0 && 
-                          <span className='error'>{passwordError}</span>}
-            </FormControl>  
-            
-              
+                        </FormControl>  
             </Grid>
         </Grid>
       </div>
 <br /><br/><br/>
                 <div>
-                <Button variant={'contained'} color={'primary'} size={'small'} onClick={handleLogin}  disabled={!validateForm()} value='Login' >Login</Button><br /><br/>
-                
-                
-                
+                <Button variant={'contained'} color={'primary'} size={'small'}  onClick={()=>{handleLogin();loginDenied()}}  disabled={!validateForm()} value='Login' >Login</Button><br /><br/>
                 </div>
                 </Box>
             </Paper>
             </Grid>
             </Grid>
-            
-        </MuiThemeProvider>
+            </MuiThemeProvider>
         </div>
-        
-       
-        
-    );
+        );
 }
-
 export default Login;

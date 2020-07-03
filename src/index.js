@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import login from './login/login';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import ClassComponent from './forms/ClassComponent';
+import RegistrationUserForm from './forms/RegistrationUserForm';
 
 
 
@@ -15,9 +15,8 @@ ReactDOM.render(
     <Switch>
       <Route exact path="/"  component={login} />
       <Route exact path="/App" component={App} />
-      <Route exact path="/ClassComponent" component={ClassComponent} />
-      
-    </Switch>
+      <Route exact path="/RegistrationUserForm" component={RegistrationUserForm} />
+      </Switch>
   </BrowserRouter>,
 document.getElementById('root')
 );
