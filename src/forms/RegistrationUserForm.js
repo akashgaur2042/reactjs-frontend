@@ -1,11 +1,23 @@
 import React from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
+<<<<<<< HEAD:src/forms/RegistrationUserForm.js
+=======
+
+>>>>>>> d8f67889743031e8bbd7756460350d6b831ce7e2:src/forms/ClassComponent.js
 import { Button } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import clsx from 'clsx';
 import Grid from '@material-ui/core/Grid';
+<<<<<<< HEAD:src/forms/RegistrationUserForm.js
+=======
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+
+
+>>>>>>> d8f67889743031e8bbd7756460350d6b831ce7e2:src/forms/ClassComponent.js
 const validEmailRegex = RegExp(
   /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
 );
@@ -15,8 +27,21 @@ const validateForm = errors => {
   Object.values(errors).forEach(val => val.length > 0 && (valid = false));
   return valid;
 };
+<<<<<<< HEAD:src/forms/RegistrationUserForm.js
 export default class RegistrationUserForm extends React.Component {
 constructor() {
+=======
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+
+export default class ClassComponent extends React.Component {
+
+   
+  constructor() {
+>>>>>>> d8f67889743031e8bbd7756460350d6b831ce7e2:src/forms/ClassComponent.js
     super();
     //  this.classes = this.useStyles();
     this.state = {
@@ -30,13 +55,21 @@ constructor() {
           salary: '',
           leaves:'',
         },
+<<<<<<< HEAD:src/forms/RegistrationUserForm.js
         flag:true,
+=======
+        flag:false,
+        open:false
+>>>>>>> d8f67889743031e8bbd7756460350d6b831ce7e2:src/forms/ClassComponent.js
       };
     }
   useStyles = makeStyles((theme) => ({
 	root: {
 	  display: 'flex',
-	  flexWrap: 'wrap',
+    flexWrap: 'wrap',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    }
 	},
 	margin: {
 	  margin: theme.spacing(1),
@@ -51,11 +84,41 @@ constructor() {
 		margin: theme.spacing(1),
 		position: 'relative',
 	  },
+<<<<<<< HEAD:src/forms/RegistrationUserForm.js
 	}));
   refreshPage=()=> {
     const timer = setTimeout(() =>{window.location.reload(false);}, 200);
     return () => clearTimeout(timer);
   }
+=======
+	
+		}));
+
+   refreshPage=()=> {
+    const timer = setTimeout(() =>{window.location.reload(false);}, 3000);
+    return () => clearTimeout(timer);
+  }
+
+  // const [open, setOpen] = React.this.state(false);
+
+   handleClick = () => {
+    this.setState.open=true;
+  };
+
+   handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+  }
+
+    // this.open=false;
+
+
+  
+
+    
+
+>>>>>>> d8f67889743031e8bbd7756460350d6b831ce7e2:src/forms/ClassComponent.js
   handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -196,10 +259,26 @@ constructor() {
 		  type="submit"
         //   disabled={!this.formValid}
         disabled={this.flag}
+<<<<<<< HEAD:src/forms/RegistrationUserForm.js
         onClick={this.refreshPage}
 		>
           Save
         </Button>
+=======
+        // onClick={this.handleClick}
+         
+
+		onClick={this.refreshPage}
+		>
+          Save
+        </Button>
+        <Snackbar open={this.open} autoHideDuration={3000} onClose={this.handleClose}>
+        <Alert onClose={this.handleClose} severity="success">
+         Employee Registered!
+        </Alert>
+      </Snackbar>
+        
+>>>>>>> d8f67889743031e8bbd7756460350d6b831ce7e2:src/forms/ClassComponent.js
         </div>
 			</div>
 			</Grid>

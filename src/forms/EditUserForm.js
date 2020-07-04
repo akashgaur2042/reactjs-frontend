@@ -47,11 +47,24 @@ useEffect(
 					console.log(res);
 					console.log(res.data);
 					})
+<<<<<<< HEAD
 	  }
   const refreshPage=()=> {
       const timer = setTimeout(() =>{window.location.reload(false);}, 200);
       return () => clearTimeout(timer);
     }
+=======
+    }
+    
+   const  refreshPage=()=> {
+      const timer = setTimeout(() =>{window.location.reload(false);}, 3000);
+      return () => clearTimeout(timer);
+    }
+  
+  
+
+
+>>>>>>> d8f67889743031e8bbd7756460350d6b831ce7e2
   return (
     <form
       onSubmit={event => {
@@ -107,8 +120,13 @@ useEffect(
     onChange={handleInputChange}
     variant="outlined"
       /><br/><br/>
+<<<<<<< HEAD
       <Button type='submit' variant={'contained'} color={'primary'} onClick={()=>{update();refreshPage()}}>Update Employee</Button>&nbsp;
       <Button type='submit' variant={'contained'} color={'primary'} onClick={() => props.setEditing(false)} className="button muted-button">
+=======
+      <Button type='submit' variant={'contained'} color={'primary'} onClick={()=>{update(); refreshPage(); }} >Update Employee</Button>&nbsp;
+      <Button type='submit' variant={'contained'} color={'primary'} onClick={() => props.setEditing(false)}  className="button muted-button">
+>>>>>>> d8f67889743031e8bbd7756460350d6b831ce7e2
         Cancel
       </Button>
     </form>
