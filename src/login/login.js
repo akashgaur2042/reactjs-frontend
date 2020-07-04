@@ -86,15 +86,7 @@ const DialogContent = withStyles((theme) => ({
 }))(MuiDialogContent);
 function Login() {
   const [open, setOpen] = React.useState(false);
-<<<<<<< HEAD
   const [flag, setFlag] = useState(true);
-=======
-  const initialFormState = {  username: '', password: '' }
-  const [ errors, setError ] = useState(initialFormState) 
-  
-
-
->>>>>>> d8f67889743031e8bbd7756460350d6b831ce7e2
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -127,31 +119,11 @@ function Login() {
 
           history.push('/App');
         }
-<<<<<<< HEAD
       })
   }
   function loginDenied() {
   }
   return (
-=======
-    
-        setError({errors, [name]: value});
-        
-       
-        
-      }
-      
-        
-      
-      
-    
-    
-return (
-
-
-  
-  
->>>>>>> d8f67889743031e8bbd7756460350d6b831ce7e2
     <div className={classes.root}  >
       <MuiThemeProvider>
         <AppBar position="static">
@@ -178,7 +150,6 @@ return (
             <Typography variant="h6" className={classes.title}>
               ADMIN LOGIN
     </Typography>
-<<<<<<< HEAD
           </Toolbar>
         </AppBar>
         <Grid container spacing={8} justify="center"
@@ -241,81 +212,6 @@ return (
                   </Grid>
                 </div>
                 <br /><br /><br />
-=======
-    
-  </Toolbar>
-</AppBar>
-<Grid container spacing={8} justify="center"
-  alignItems="center" style={{ padding: 5 } }>
-    <Grid item xs={16}>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src={logo} alt="Logo" />
-      <h2> &nbsp; &nbsp; Impledge Technologies</h2>
-      <Paper className={classes.paper}>
-      <Box fontFamily="Monospace" border={1} borderColor="primary.main"  color="text.secondary" boxShadow={3} height="100%">
-      <div className={classes.margin}>
-      <Grid container spacing={1} alignItems="flex-end">
-      <Grid item>
-      <AccountCircle />
-      </Grid>
-      <Grid item>
-      <FormControl className={clsx(classes.margin, classes.textField)} variant="filled">
-      <InputLabel htmlFor="outlined-adornment-username">Username</InputLabel>
-      <FilledInput
-      id="input-with-icon-grid"  
-      placeholder="Enter Your username"
-      label="Username"
-      onChange={e => setUsername(e.target.value)}
-      // onChange={handleChange}
-      margin="normal"
-      size="large"
-      noValidate
-      /><br/>
-     
-      </FormControl>
-      </Grid>
-      </Grid>
-      </div><br/>
-      <div className={classes.margin}>
-            <Grid container spacing={1} alignItems="flex-end">
-            <Grid item>
-            <AccountCircle />
-            </Grid>
-            <Grid item>
-            <FormControl className={clsx(classes.margin, classes.textField)} variant="filled">
-          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-          <FilledInput
-          id="input-with-icon-grid"  
-          type={password.showPassword ? 'text' : 'password'}
-                      placeholder="Enter Password"
-                      label="Password"
-                      
-                      onChange={e => setPassword(e.target.value)}
-                      // onChange={handleChange}
-
-                      margin="normal"
-
-
-                      endAdornment={
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="toggle password visibility"
-                              onClick={handleClickShowPassword}
-                              onMouseDown={handleMouseDownPassword}
-                              edge="end"
-                            >
-                              {password.showPassword ? <Visibility /> : <VisibilityOff />}
-                            </IconButton>
-                          </InputAdornment>
-                        }/>  
-                       
-            </FormControl>  
-            
-              
-            </Grid>
-        </Grid>
-      </div>
-<br /><br/><br/>
->>>>>>> d8f67889743031e8bbd7756460350d6b831ce7e2
                 <div>
                   <Button variant={'contained'} color={'primary'} size={'small'} onClick={() => { handleLogin(); loginDenied() }} disabled={!validateForm()} value='Login' >Login</Button><br /><br />
                 </div>

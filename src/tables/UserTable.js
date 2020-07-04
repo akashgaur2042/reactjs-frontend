@@ -35,24 +35,13 @@ export default function UserTable(props)
     setUsers(res.data);   
    });
   },[]);
-<<<<<<< HEAD
   const deleteUser = id => {
   axios.delete(baseUrl+id)
-=======
-
-  const deleteUser = employeeid => {
-    
-    axios.delete(`https://localhost:5001/api/Employee/${users.employeeid}`)
->>>>>>> d8f67889743031e8bbd7756460350d6b831ce7e2
     .then(res => {
       console.log(res);
       console.log(res.data);
     })
-<<<<<<< HEAD
     setUsers(users.filter(user => user.employeeid !== id))
-=======
-    setUsers(users.filter(user => user.employeeid !== employeeid))
->>>>>>> d8f67889743031e8bbd7756460350d6b831ce7e2
   }
  return(
   <TableContainer component={Paper}>
