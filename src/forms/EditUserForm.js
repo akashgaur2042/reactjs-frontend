@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 
+//setting attributes of material-ui stylings
 const useStyles = makeStyles((theme) => ({
 	root: {
 	  display: 'flex',
@@ -21,10 +22,11 @@ const useStyles = makeStyles((theme) => ({
 	  width: '25ch',
 	},
   }));
-
 const EditUserForm = props => {
 const classes = useStyles();
+//declare user and set user as current-user
 const [ user, setUser ] = useState(props.currentUser)
+//use life cycle hook method for set user as current-user
 useEffect(
     () => {
       setUser(props.currentUser)
@@ -40,6 +42,7 @@ useEffect(
     setUser({ ...user, [name]: value })
   }
   const baseUrl=`https://localhost:5001/api/Employee/`;
+  //using axios put http method for updation
   function update()
    {
 	  axios.put(baseUrl+  Employeeid, {Name, Employeeid, Salary,Leaves})
@@ -47,7 +50,8 @@ useEffect(
 					console.log(res);
 					console.log(res.data);
 					})
-	  }
+    }
+    //refresh method for refreshing page
   const refreshPage=()=> {
       const timer = setTimeout(() =>{window.location.reload(false);}, 200);
       return () => clearTimeout(timer);

@@ -1,16 +1,14 @@
 import React, {useState, useEffect} from 'react'
-import { Button} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import DeleteForeverTwoToneIcon from '@material-ui/icons/DeleteForeverTwoTone';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import axios from 'axios';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
+//setting attributes of material-ui stylings
 const useStyles = makeStyles((theme)=>({
   table: {
     minWidth: 650,
@@ -26,15 +24,17 @@ const useStyles = makeStyles((theme)=>({
 export default function UserTable(props)
 {
   const classes = useStyles();
+  //declare user and set user value as null
   const [ users, setUsers ] = useState([])
-  var Employeeid=users.employeeid;
   const baseUrl="https://localhost:5001/api/Employee/"
+  //using axios get hppt method inside life cycle hook
  useEffect(()=> {
    axios.get(baseUrl)
    .then((res)=>{
     setUsers(res.data);   
    });
   },[]);
+  //using axios delete hppt method for deleting row
   const deleteUser = id => {
   axios.delete(baseUrl+id)
     .then(res => {

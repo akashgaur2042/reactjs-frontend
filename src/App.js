@@ -19,6 +19,7 @@ import EditUserForm from './forms/EditUserForm'
 import logo_1 from './logo/add_logo.PNG';
 import logo_2 from './logo/edit_logo.PNG';
 import RegistrationUserForm from './forms/RegistrationUserForm';
+
 const useStyles = makeStyles((theme) => ({
 	root: {
 	  flexGrow: 1,
@@ -70,9 +71,12 @@ const styles = (theme) => ({
 		{ id: 1, name: 'Tania', employeeid: 'tania.sharma', salary: '10000', leaves:'1' }
 	]
 	const [open, setOpen] = React.useState(false);
+	//declare form attributes with null values
 	const initialFormState = { id: null, name: '', employeeid: '', salary:'',leaves:'' }
 	const [ users, setUsers ] = useState(usersData)
+	//declare current-user as null 
 	const [ currentUser, setCurrentUser ] = useState(initialFormState)
+	//declare edit flag as false initially for editing
 	const [ editing, setEditing ] = useState(false)
 	let history = useHistory();
 	useEffect(()=>
@@ -86,29 +90,37 @@ const styles = (theme) => ({
 			history.push('/');
 		}
 	});
+	//function for setting open flag true, for opening up dialog box 
 	const handleClickOpen = () => {
 	  setOpen(true);
 	};
+	//function for setting open flag false, for closing down dialog box 
 	const handleClose = () => {
 	  setOpen(false);
 	};
 	const classes = useStyles();
+	//logout function for logging out page
 	const logout=()=> {
         localStorage.clear();
 		window.location.href = "/";
 		}
+
+		//add user to usertable
 	const addUser = user => {
 			user.id = users.length + 1
 			setUsers([ ...users, user ])
 		}
+		//delete user from usertable
 	const deleteUser = id => {
 			setEditing(false)
 			setUsers(users.filter(user => user.id !== id))
 		}
+		//update user from usertable
 	const updateUser = (id,updatedUser) => {
 			setEditing(false)
 			setUsers(users.map(user => (user.id === id ? updatedUser : user)))
 			}
+		//edit row from usertable
 	const editRow = user => {
 			setEditing(true)
 			setCurrentUser({ id: user.id, name: user.name, employeeid:user.employeeid,salary:user.salary,leaves:user.leaves })

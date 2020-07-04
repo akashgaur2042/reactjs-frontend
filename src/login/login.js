@@ -28,6 +28,7 @@ import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import { withStyles } from '@material-ui/core/styles';
 
+//setting attributes of material-ui stylings
 const Box = styled('div')(compose(spacing, palette, typography, shadows));
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,19 +85,26 @@ const DialogContent = withStyles((theme) => ({
     padding: theme.spacing(2),
   },
 }))(MuiDialogContent);
-function Login() {
+function Login() { 
+  //setting boolean open as false initially
   const [open, setOpen] = React.useState(false);
-  const [flag, setFlag] = useState(true);
+  //setting boolean flag as true initially
+  const [flag, setFlag] = React.useState(true);
+  //method for openning up dialog box at toolbar
   const handleClickOpen = () => {
     setOpen(true);
   };
+  //method for closing down dialog box at toolbar
   const handleClose = () => {
     setOpen(false);
   };
   const classes = useStyles();
   let history = useHistory();
+  //declaring username and set username as null
   const [username, setUsername] = useState("");
+  //declaring password and set password as null
   const [password, setPassword] = React.useState({ password: '', showPassword: false, });
+  //method for show and hide password in password textfield
   const handleClickShowPassword = () => {
     setPassword({ ...password, showPassword: !password.showPassword });
   };
@@ -107,6 +115,7 @@ function Login() {
     return username.length > 0 && password.length > 0;
   }
   const baseUrl = `https://localhost:5001/api/User`;
+  //axios post method for sending user credentials to server 
   function handleLogin() {
     axios.post(baseUrl, { username, password })
       .then(res => {
@@ -116,7 +125,6 @@ function Login() {
         if (res.status === 200) {
           setFlag(true);
           localStorage.setItem('flag', flag)
-
           history.push('/App');
         }
       })
@@ -193,7 +201,6 @@ function Login() {
                           placeholder="Enter Password"
                           label="Password"
                           onChange={e => setPassword(e.target.value)}
-                          // onChange={handleChange}
                           margin="normal"
                           endAdornment={
                             <InputAdornment position="end">

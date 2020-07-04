@@ -6,9 +6,12 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import clsx from 'clsx';
 import Grid from '@material-ui/core/Grid';
+
+//regex expression for e-mail validation
 const validEmailRegex = RegExp(
   /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
 );
+//regex expression for numbric values 
 const numbric=RegExp(/^[0-9\b]+$/);
 const validateForm = errors => {
   let valid = true;
@@ -18,7 +21,7 @@ const validateForm = errors => {
 export default class RegistrationUserForm extends React.Component {
 constructor() {
     super();
-    //  this.classes = this.useStyles();
+    //decalring all User-Form attributes as null
     this.state = {
         name: null,
         employeeid: null,
@@ -33,6 +36,7 @@ constructor() {
         flag:true,
       };
     }
+  //declaring material-ui styling attributes 
   useStyles = makeStyles((theme) => ({
 	root: {
 	  display: 'flex',
@@ -54,11 +58,13 @@ constructor() {
 		margin: theme.spacing(1),
 		position: 'relative',
 	  },
-	}));
+  }));
+  //method for refreshing page
   refreshPage=()=> {
     const timer = setTimeout(() =>{window.location.reload(false);}, 200);
     return () => clearTimeout(timer);
   }
+  //using method for form validation using switch statements 
   handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -93,6 +99,7 @@ constructor() {
     }
     this.setState({errors, [name]: value});
   }
+  //submit method for form submission
   handleSubmit = (event) => {
     event.preventDefault();
     if(validateForm(this.state.errors)) {
@@ -100,6 +107,7 @@ constructor() {
     }else{
         console.info('Invalid Form')
     }
+    //decalring form attributes with their initial values
   const User = {
         name: this.state.name,
         employeeid: this.state.employeeid,
@@ -111,6 +119,7 @@ constructor() {
        const Salary=User.salary;
        const Leaves=User.leaves;
        const baseUrl=`https://localhost:5001/api/Employee`;
+       //using axios post http method for sending data to server
        axios.post(baseUrl, { Name,Employeeid,Salary,Leaves })
 				  .then(res => {
 					console.log(res);
