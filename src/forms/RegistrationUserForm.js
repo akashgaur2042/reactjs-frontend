@@ -9,7 +9,6 @@ import Grid from '@material-ui/core/Grid';
 const validEmailRegex = RegExp(
   /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
 );
-
 const numbric=RegExp(/^[0-9\b]+$/);
 const validateForm = errors => {
   let valid = true;
@@ -91,7 +90,6 @@ constructor() {
     }
     this.setState({errors, [name]: value});
   }
-
   handleSubmit = (event) => {
     event.preventDefault();
     if(validateForm(this.state.errors)) {
@@ -114,8 +112,7 @@ constructor() {
 				  .then(res => {
 					console.log(res);
 					console.log(res.data);
-					
-			})
+					})
   }
   render() {
     const {errors} = this.state;
@@ -158,8 +155,7 @@ constructor() {
            </div><br/>
             <div className='salary'>
             <TextField
-            
-      label="Salary:"
+            label="Salary:"
 		  name="salary"
           id="outlined-start-adornment"
           className={clsx(this.useStyles.margin, this.useStyles.textField)}
@@ -176,8 +172,7 @@ constructor() {
             </div><br/>
             <div className='leaves'>
              <TextField
-             
-	    label="Leaves"
+             label="Leaves"
 		  name="leaves"
           id="outlined-start-adornment"
           className={clsx(this.useStyles.margin, this.useStyles.textField)}

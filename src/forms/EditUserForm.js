@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 
-
 const useStyles = makeStyles((theme) => ({
 	root: {
 	  display: 'flex',
@@ -23,36 +22,24 @@ const useStyles = makeStyles((theme) => ({
 	},
   }));
 
-
-
-
 const EditUserForm = props => {
-
-  
-  const classes = useStyles();
-  const [ user, setUser ] = useState(props.currentUser)
-
-
-  useEffect(
+const classes = useStyles();
+const [ user, setUser ] = useState(props.currentUser)
+useEffect(
     () => {
       setUser(props.currentUser)
-
-    },
+  },
     [ props ]
   )
-
   var Name=user.name;
   var Employeeid=user.employeeid;
   var Salary=user.salary;
   var Leaves=user.leaves;
-  
   const handleInputChange = event => {
     const { name, value } = event.target
-
     setUser({ ...user, [name]: value })
   }
   const baseUrl=`https://localhost:5001/api/Employee/`;
-  
   function update()
    {
 	  axios.put(baseUrl+  Employeeid, {Name, Employeeid, Salary,Leaves})
@@ -61,23 +48,17 @@ const EditUserForm = props => {
 					console.log(res.data);
 					})
 	  }
-  
-   const refreshPage=()=> {
+  const refreshPage=()=> {
       const timer = setTimeout(() =>{window.location.reload(false);}, 200);
       return () => clearTimeout(timer);
     }
-
-
   return (
     <form
       onSubmit={event => {
         event.preventDefault()
         props.updateUser(Employeeid, user)
-
-    
-      }}
+    }}
     >
-    
     <TextField
     label="Name: "
     name="name"
@@ -90,8 +71,6 @@ const EditUserForm = props => {
     onChange={handleInputChange}
     variant="outlined"
     /><br/>
-
-
     <TextField
     label="Employee ID:"
     name="employeeid"
@@ -104,11 +83,8 @@ const EditUserForm = props => {
     onChange={handleInputChange}
     variant="outlined"
       /><br/>
-
-
-      <TextField
-      
-		  label="Salary"
+    <TextField
+      label="Salary"
 		  name="salary"
           id="outlined-start-adornment"
           className={clsx(classes.margin, classes.textField)}
@@ -119,10 +95,7 @@ const EditUserForm = props => {
       onChange={handleInputChange}
 		  variant="outlined"
     /><br/>
-    
-
     <TextField
-    
     label="Leaves"
     name="leaves"
         id="outlined-start-adornment"

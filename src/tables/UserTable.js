@@ -11,10 +11,6 @@ import axios from 'axios';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-
-
-
-
 const useStyles = makeStyles((theme)=>({
   table: {
     minWidth: 650,
@@ -27,43 +23,32 @@ const useStyles = makeStyles((theme)=>({
     },
   },
 }));
-
 export default function UserTable(props)
 {
   const classes = useStyles();
-
   const [ users, setUsers ] = useState([])
-
-  
   var Employeeid=users.employeeid;
   const baseUrl="https://localhost:5001/api/Employee/"
  useEffect(()=> {
    axios.get(baseUrl)
    .then((res)=>{
     setUsers(res.data);   
-   
-    });
+   });
   },[]);
-
   const deleteUser = id => {
-    
-    axios.delete(baseUrl+id)
+  axios.delete(baseUrl+id)
     .then(res => {
       console.log(res);
       console.log(res.data);
     })
     setUsers(users.filter(user => user.employeeid !== id))
   }
- 
-return(
-  
+ return(
   <TableContainer component={Paper}>
-
   <table className={classes.table} aria-label="simple table">
     <thead>
       <tr>
-       
-        <th>Employee ID</th>
+       <th>Employee ID</th>
         <th>Name</th>
         <th>Salary</th>
         <th>Leaves</th> 
@@ -74,29 +59,21 @@ return(
       {users.length  > 0 ? (
         users.map(employee => (
           <tr key={employee.id}>
-            
-            
             <td>{employee.employeeid}</td>
             <td>{employee.name}</td>
             <td>{employee.salary}</td>
             <td>{employee.leaves}</td>
             <td>
-               
-              <Fab size="small" color="primary" aria-label="edit"  
+               <Fab size="small" color="primary" aria-label="edit"  
               onClick={() => { 
               props.editRow(employee)
               }}>
               <EditIcon fontSize="small"/>
               </Fab>&nbsp;&nbsp;&nbsp;
-              
-
-          <IconButton aria-label="delete" className={classes.margin} onClick={() => deleteUser(employee.employeeid)}>
+              <IconButton aria-label="delete" className={classes.margin} onClick={() => deleteUser(employee.employeeid)}>
           <DeleteIcon fontSize="small" />
          </IconButton>
-             
-               
-              
-              </td>
+             </td>
           </tr>
         ))
       ) : (
