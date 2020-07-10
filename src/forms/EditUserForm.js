@@ -4,7 +4,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import axios from 'axios';
+
 
 //setting attributes of material-ui stylings
 const useStyles = makeStyles((theme) => ({
@@ -33,34 +33,16 @@ useEffect(
   },
     [ props ]
   )
-  var Name=user.name;
-  var Employeeid=user.employeeid;
-  var Salary=user.salary;
-  var Leaves=user.leaves;
   const handleInputChange = event => {
     const { name, value } = event.target
     setUser({ ...user, [name]: value })
-  }
-  const baseUrl=`https://localhost:5001/api/Employee/`;
-  //using axios put http method for updation
-  function update()
-   {
-	  axios.put(baseUrl+  Employeeid, {Name, Employeeid, Salary,Leaves})
-				  .then(res => {
-					console.log(res);
-					console.log(res.data);
-					})
-    }
-    //refresh method for refreshing page
-  const refreshPage=()=> {
-      const timer = setTimeout(() =>{window.location.reload(false);}, 200);
-      return () => clearTimeout(timer);
-    }
+   }
+    
   return (
     <form
       onSubmit={event => {
         event.preventDefault()
-        props.updateUser(Employeeid, user)
+        
     }}
     >
     <TextField
@@ -68,21 +50,17 @@ useEffect(
     name="name"
     id="outlined-start-adornment"
     className={clsx(classes.margin, classes.textField)}
-    InputProps={{
-      startAdornment: <InputAdornment position="start"></InputAdornment>,
-    }}
+   
     value={user.name}
     onChange={handleInputChange}
     variant="outlined"
     /><br/>
     <TextField
-    label="Employee ID:"
+    label="E-Mail"
     name="employeeid"
         id="outlined-start-adornment"
         className={clsx(classes.margin, classes.textField)}
-        InputProps={{
-          startAdornment: <InputAdornment position="start"></InputAdornment>,
-    }}
+       
     value={user.employeeid}
     onChange={handleInputChange}
     variant="outlined"
@@ -93,7 +71,7 @@ useEffect(
           id="outlined-start-adornment"
           className={clsx(classes.margin, classes.textField)}
           InputProps={{
-            startAdornment: <InputAdornment position="start">INR.</InputAdornment>,
+            startAdornment: <InputAdornment position="start">$</InputAdornment>,
 		  }}
 		  value={user.salary}
       onChange={handleInputChange}
@@ -104,14 +82,12 @@ useEffect(
     name="leaves"
         id="outlined-start-adornment"
         className={clsx(classes.margin, classes.textField)}
-        InputProps={{
-          startAdornment: <InputAdornment position="start"></InputAdornment>,
-    }}
+       
     value={user.leaves}
     onChange={handleInputChange}
     variant="outlined"
       /><br/><br/>
-      <Button type='submit' variant={'contained'} color={'primary'} onClick={()=>{update();refreshPage()}}>Update Employee</Button>&nbsp;
+      <Button type='submit' variant={'contained'} color={'primary'} onClick={()=> props.updateUser(user.employeeid,user)}>Update Employee</Button>&nbsp;
       <Button type='submit' variant={'contained'} color={'primary'} onClick={() => props.setEditing(false)} className="button muted-button">
         Cancel
       </Button>

@@ -19,6 +19,7 @@ import EditUserForm from './forms/EditUserForm'
 import logo_1 from './logo/add_logo.PNG';
 import logo_2 from './logo/edit_logo.PNG';
 import RegistrationUserForm from './forms/RegistrationUserForm';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -48,6 +49,7 @@ const styles = (theme) => ({
       color: theme.palette.grey[500],
     },
   });
+
 	const DialogTitle = withStyles(styles)((props) => {
     const { children, classes, onClose, ...other } = props;
     return (
@@ -66,63 +68,92 @@ const styles = (theme) => ({
       padding: theme.spacing(2),
     },
   }))(MuiDialogContent);
+
   const App = () => {
-	const usersData = [
-		{ id: 1, name: 'Tania', employeeid: 'tania.sharma', salary: '10000', leaves:'1' }
-	]
 	const [open, setOpen] = React.useState(false);
 	//declare form attributes with null values
 	const initialFormState = { id: null, name: '', employeeid: '', salary:'',leaves:'' }
-	const [ users, setUsers ] = useState(usersData)
+	const [ users, setUsers ] = useState([]);
 	//declare current-user as null 
 	const [ currentUser, setCurrentUser ] = useState(initialFormState)
 	//declare edit flag as false initially for editing
 	const [ editing, setEditing ] = useState(false)
 	let history = useHistory();
+	const baseUrl="https://localhost:5001/api/Employee/";
+	
 	useEffect(()=>
 	{
-		const localStorage_flag=localStorage.getItem('flag');
-		if(localStorage_flag==='true')
-		{
-			return 
+		const localStorage_flag=JSON.parse(localStorage.getItem("currentuser"));
+		if(localStorage_flag !=null)
+		{		
+		getEmployees();
 		}
 		else{
 			history.push('/');
 		}
-	});
+		
+	 // eslint-disable-next-line react-hooks/exhaustive-deps
+	 },[]);
+
 	//function for setting open flag true, for opening up dialog box 
 	const handleClickOpen = () => {
 	  setOpen(true);
 	};
+
 	//function for setting open flag false, for closing down dialog box 
 	const handleClose = () => {
 	  setOpen(false);
 	};
+
 	const classes = useStyles();
 	//logout function for logging out page
 	const logout=()=> {
         localStorage.clear();
 		window.location.href = "/";
-		}
+	}
 
-		//add user to usertable
-	const addUser = user => {
-			user.id = users.length + 1
-			setUsers([ ...users, user ])
-		}
-		//delete user from usertable
-	const deleteUser = id => {
-			setEditing(false)
-			setUsers(users.filter(user => user.id !== id))
-		}
-		//update user from usertable
-	const updateUser = (id,updatedUser) => {
-			setEditing(false)
-			setUsers(users.map(user => (user.id === id ? updatedUser : user)))
-			}
-		//edit row from usertable
-	const editRow = user => {
-			setEditing(true)
+	  function getEmployees() {
+		  axios.get(baseUrl)
+			  .then((res) => {
+				  setUsers(res.data);
+			  }).catch(err => {
+				  
+			  });
+	  }
+	  //addUser method uses axios post http method for sending data to server
+	  const addUser = addUser => {
+		const Name=addUser.name;
+		const Employeeid=addUser.employeeid;
+		const Salary=addUser.salary;
+		const Leaves=addUser.leaves;
+		axios.post(baseUrl, { Name,Employeeid,Salary,Leaves })
+				  .then(res => {
+					getEmployees();
+			})
+	}
+	//delete user from usertable
+	  const deleteUser = (id) => {
+			axios.delete(baseUrl + id)
+			  .then(res => {
+				  getEmployees();
+			  });
+	};
+	//update user from usertable, uses put axios http method
+	const updateUser = (id,updatedUsers) => {
+			setEditing(false);
+			const Name=updatedUsers.name;
+			 const Employeeid=updatedUsers.employeeid;
+			 const Salary=updatedUsers.salary;
+			 const Leaves=updatedUsers.leaves;
+			axios.put(baseUrl+  id, {Name,Employeeid,Salary,Leaves})
+				  .then(res => { 
+					getEmployees();
+					})
+					}
+	//edit row from usertable
+	const editRow = (user) => {
+			setEditing(true);
+			getEmployees();
 			setCurrentUser({ id: user.id, name: user.name, employeeid:user.employeeid,salary:user.salary,leaves:user.leaves })
 		}
 	return (
@@ -153,12 +184,12 @@ const styles = (theme) => ({
 			<Button color="inherit" href="/" onClick={() => logout()}>LOGOUT</Button>
 		  </Toolbar>
 		</AppBar>
-	<Grid container spacing={3}  >
+	<Grid container spacing={5}  >
 		<Grid item xs={7}>
 		<Paper className={classes.paper} >
 				<div className="flex-large">
 					<h2>View Employees</h2><br/><br/>
-					<UserTable   addUser={addUser} editRow={editRow} deleteUser={deleteUser} />
+					<UserTable users={users} key={Math.random} editRow={editRow} deleteUser={deleteUser} />
 				</div>
 				</Paper>
 		</Grid>

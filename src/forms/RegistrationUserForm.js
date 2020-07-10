@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -7,35 +6,32 @@ import TextField from '@material-ui/core/TextField';
 import clsx from 'clsx';
 import Grid from '@material-ui/core/Grid';
 
+
 //regex expression for e-mail validation
 const validEmailRegex = RegExp(
-  /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+  /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i
 );
 //regex expression for numbric values 
 const numbric=RegExp(/^[0-9\b]+$/);
-const validateForm = errors => {
-  let valid = true;
-  Object.values(errors).forEach(val => val.length > 0 && (valid = false));
-  return valid;
-};
 export default class RegistrationUserForm extends React.Component {
 constructor() {
     super();
     //decalring all User-Form attributes as null
     this.state = {
+      user:{  
         name: null,
         employeeid: null,
         salary: null,
         leaves: null,
+      },
         errors: {
           name: '',
           employeeid: '',
           salary: '',
           leaves:'',
         },
-        flag:true,
-      };
-    }
+ };
+}
   //declaring material-ui styling attributes 
   useStyles = makeStyles((theme) => ({
 	root: {
@@ -59,11 +55,6 @@ constructor() {
 		position: 'relative',
 	  },
   }));
-  //method for refreshing page
-  refreshPage=()=> {
-    const timer = setTimeout(() =>{window.location.reload(false);}, 200);
-    return () => clearTimeout(timer);
-  }
   //using method for form validation using switch statements 
   handleChange = (event) => {
     event.preventDefault();
@@ -73,59 +64,44 @@ constructor() {
       case 'name': 
       errors.name = 
           value.length < 5
-            ? this.flag=true && 'enter name at least 5 characters long!' 
+            ? 'enter name at least 5 characters long!' 
             : '';
             break;
       case 'employeeid': 
         errors.employeeid = 
           validEmailRegex.test(value)
             ? ''
-            : this.flag=true && 'e-mail is not valid!';
+            :  'e-mail is not valid!';
         break;
       case 'salary': 
         errors.salary = 
-        !numbric.test(value) || value.length < 5
-            ?this.flag=true && 'only numbric Values and 5 digits atleast!'
+        !numbric.test(value) || value.length < 3
+            ? 'only numbric Values and  digits atleast!'
             : '';
         break;
       case 'leaves': 
         errors.leaves = 
         !numbric.test(value) || value.length > 3
-            ? this.flag=true && 'only numbric values and 3 digits atmost!'
-            : this.flag=false;
+            ? this.save=false && 'only numbric values and 3 digits atmost!'
+            : this.save=true;
         break;
       default:
         break;
     }
     this.setState({errors, [name]: value});
-  }
-  //submit method for form submission
-  handleSubmit = (event) => {
+  
+  }  
+   //submit method for form submission
+   handleSubmit = (event) => {
     event.preventDefault();
-    if(validateForm(this.state.errors)) {
-      console.info('Valid Form')
-    }else{
-        console.info('Invalid Form')
+     const User = {
+      name: this.state.name,
+      employeeid: this.state.employeeid,
+      salary: this.state.salary,
+      leaves: this.state.leaves
+      }
+    this.props.addUser(User);
     }
-    //decalring form attributes with their initial values
-  const User = {
-        name: this.state.name,
-        employeeid: this.state.employeeid,
-        salary: this.state.salary,
-        leaves: this.state.leaves
-        };
-      const Name=User.name;
-       const Employeeid=User.employeeid;
-       const Salary=User.salary;
-       const Leaves=User.leaves;
-       const baseUrl=`https://localhost:5001/api/Employee`;
-       //using axios post http method for sending data to server
-       axios.post(baseUrl, { Name,Employeeid,Salary,Leaves })
-				  .then(res => {
-					console.log(res);
-					console.log(res.data);
-					})
-  }
   render() {
     const {errors} = this.state;
     return (
@@ -138,41 +114,35 @@ constructor() {
 			name="name"
 			id="outlined-start-adornment"
 			className={clsx(this.useStyles.margin, this.useStyles.textField)}
-			InputProps={{
-			  startAdornment: <InputAdornment position="start"></InputAdornment>,
-			}}
+		
 			onChange={this.handleChange}
             variant="outlined"
 		     noValidate />
 		  <br/>
               {errors.name.length > 0 && 
-                <span className='error'>{errors.name}</span>}
+                <span className='error' >{errors.name}</span>}
             </div>
             <br/>
       <div className='employeeid'>
              <TextField
-		  label="Employee ID:"
+		  label="E-Mail"
 		  name="employeeid"
           id="outlined-start-adornment"
           className={clsx(this.useStyles.margin, this.useStyles.textField)}
-          InputProps={{
-            startAdornment: <InputAdornment position="start"></InputAdornment>,
-		  }}
+         
 		  onChange={this.handleChange}
 		  variant="outlined"
           noValidate
 		/><br/>
-        {errors.employeeid.length > 0 && 
-                <span className='error'>{errors.employeeid}</span>}
-           </div><br/>
-            <div className='salary'>
-            <TextField
-            label="Salary:"
-		  name="salary"
-          id="outlined-start-adornment"
-          className={clsx(this.useStyles.margin, this.useStyles.textField)}
+        {errors.employeeid.length > 0 && <span className='error'>{errors.employeeid}</span>}
+          </div><br/>
+          <div className='salary'>
+          <TextField
+          label="Salary:"
+         name="salary"
+		    className={clsx(this.useStyles.margin, this.useStyles.textField)}
           InputProps={{
-            startAdornment: <InputAdornment position="start">INR.</InputAdornment>,
+          startAdornment: <InputAdornment >$</InputAdornment>,
 		  }}
 		onChange={this.handleChange}
 		variant="outlined"
@@ -180,7 +150,7 @@ constructor() {
 		/>
 		<br/>
               {errors.salary.length > 0 && 
-                <span className='error' color="red">{errors.salary}</span>}
+                <span className='error' >{errors.salary}</span>}
             </div><br/>
             <div className='leaves'>
              <TextField
@@ -188,9 +158,7 @@ constructor() {
 		  name="leaves"
           id="outlined-start-adornment"
           className={clsx(this.useStyles.margin, this.useStyles.textField)}
-          InputProps={{
-            startAdornment: <InputAdornment position="start"></InputAdornment>,
-		  }}
+         
 		onChange={this.handleChange}
 	        variant="outlined"
           noValidate
@@ -206,10 +174,8 @@ constructor() {
           variant="contained"
 		  color="primary"
 		  type="submit"
-        //   disabled={!this.formValid}
-        disabled={this.flag}
-        onClick={this.refreshPage}
-		>
+        disabled={!this.save}
+       >
           Save
         </Button>
         </div>

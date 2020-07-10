@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@material-ui/core';
-import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
+
 import { useHistory } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -88,8 +88,6 @@ const DialogContent = withStyles((theme) => ({
 function Login() { 
   //setting boolean open as false initially
   const [open, setOpen] = React.useState(false);
-  //setting boolean flag as true initially
-  const [flag, setFlag] = React.useState(true);
   //method for openning up dialog box at toolbar
   const handleClickOpen = () => {
     setOpen(true);
@@ -104,13 +102,16 @@ function Login() {
   const [username, setUsername] = useState("");
   //declaring password and set password as null
   const [password, setPassword] = React.useState({ password: '', showPassword: false, });
+  
   //method for show and hide password in password textfield
   const handleClickShowPassword = () => {
     setPassword({ ...password, showPassword: !password.showPassword });
   };
+  
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
   function validateForm() {
     return username.length > 0 && password.length > 0;
   }
@@ -119,21 +120,31 @@ function Login() {
   function handleLogin() {
     axios.post(baseUrl, { username, password })
       .then(res => {
-        console.log(res);
-        console.log(res.data);
-        console.log('response:', res.status);
         if (res.status === 200) {
-          setFlag(true);
-          localStorage.setItem('flag', flag)
+          localStorage.setItem("currentuser", JSON.stringify(res.data));
           history.push('/App');
         }
       })
+      .catch(function (error) {
+        alert("Username password do not match");
+        });
   }
-  function loginDenied() {
+  
+ useEffect(()=>
+ {
+  const localStorage_flag=JSON.parse(localStorage.getItem("currentuser"));
+  if(localStorage_flag !=null)
+  {
+    history.push('/App');
   }
+  else{
+    return 
+  }
+ })
+
   return (
     <div className={classes.root}  >
-      <MuiThemeProvider>
+     
         <AppBar position="static">
           <Toolbar>
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={handleClickOpen}>
@@ -162,11 +173,12 @@ function Login() {
         </AppBar>
         <Grid container spacing={8} justify="center"
           alignItems="center" style={{ padding: 5 }}>
-          <Grid item xs={16}>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src={logo} alt="Logo" />
-            <h2> &nbsp; &nbsp; Impledge Technologies</h2>
+          <Grid item >
+          &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <img src={logo} alt="Logo" />
+            <h2>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; Impledge Technologies</h2>
             <Paper className={classes.paper}>
-              <Box fontFamily="Monospace" border={1} borderColor="primary.main" color="text.secondary" boxShadow={3} height="100%">
+              <Box fontFamily="Monospace" border={1} bordercolor="primary.main" color="text.secondary" boxShadow={3} height="100%">
                 <div className={classes.margin}>
                   <Grid container spacing={1} alignItems="flex-end">
                     <Grid item>
@@ -176,11 +188,11 @@ function Login() {
                       <FormControl className={clsx(classes.margin, classes.textField)} variant="filled">
                         <InputLabel htmlFor="outlined-adornment-password">Username</InputLabel>
                         <FilledInput
-                          id="input-with-icon-grid"
+                          
                           placeholder="Enter Your username"
                           label="Username"
                           onChange={e => setUsername(e.target.value)}
-                          margin="normal"
+                          margin="dense"
                           size="large"
                         /><br />
                       </FormControl>
@@ -201,7 +213,7 @@ function Login() {
                           placeholder="Enter Password"
                           label="Password"
                           onChange={e => setPassword(e.target.value)}
-                          margin="normal"
+                          margin="dense"
                           endAdornment={
                             <InputAdornment position="end">
                               <IconButton
@@ -220,13 +232,13 @@ function Login() {
                 </div>
                 <br /><br /><br />
                 <div>
-                  <Button variant={'contained'} color={'primary'} size={'small'} onClick={() => { handleLogin(); loginDenied() }} disabled={!validateForm()} value='Login' >Login</Button><br /><br />
+                  <Button variant={'contained'} color={'primary'} size={'small'} onClick={() => { handleLogin() }} disabled={!validateForm()} value='Login' >Login</Button><br /><br />
                 </div>
               </Box>
             </Paper>
           </Grid>
         </Grid>
-      </MuiThemeProvider>
+      
     </div>
   );
 }
